@@ -35,7 +35,7 @@ bot.on('entitySpawn', (entity) => {
             spawns++
         }
 
-        console.log(`Average spawn period: ${totalElapsed / spawns}s`)
+        console.log(`Average spawn period: ${totalElapsed / spawns}s. Total spawned: ${spawns}`)
     } 
 })
 setInterval(() => {
