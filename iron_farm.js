@@ -1,5 +1,4 @@
 import mineflayer from 'mineflayer';
-import prismarine from 'prismarine-viewer';
 
 const bot = mineflayer.createBot({
     version: "1.20.1",
@@ -8,9 +7,14 @@ const bot = mineflayer.createBot({
     host: "play.wildwoodsmp.com",
 })
 
-bot.once('spawn', () => {
-    prismarine.mineflayer(bot, {port: 8080})
-    bot.chat('/server smp')
+var spawnTimes = 0
+
+bot.on('spawn', () => {
+    spawnTimes++
+    if (spawnTimes === 1) {
+        bot.chat('/server smp')
+        return
+    }
 })
 
 var lastSpawn = null
@@ -26,13 +30,14 @@ bot.on('entitySpawn', (entity) => {
         }
         lastSpawn = now
         console.log(`${now.toUTCString()}: Iron golem spawned. Time since last spawn: ${Math.round(elapsed)}s`)
-        totalElapsed += elapsed
-        spawns++
+        if (elapsed !== 0) {
+            totalElapsed += elapsed
+            spawns++
+        }
 
         console.log(`Average spawn period: ${totalElapsed / spawns}s`)
     } 
 })
-
 setInterval(() => {
     bot.swingArm()
 }, 5000)
